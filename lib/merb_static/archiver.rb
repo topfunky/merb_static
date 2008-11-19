@@ -15,7 +15,8 @@ module Merb
 
       def copy_assets
         # TODO rake haml:compile_sass if using haml
-        FileUtils.cp_r(Merb.root / "public" , Merb.root / "output")
+        # Sync directories and preserve original file times
+        system "rsync -ruvt public/ output"
       end
 
       def unleash_the_spiders
