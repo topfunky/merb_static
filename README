@@ -3,12 +3,35 @@ merb_static
 
 A plugin for the Merb framework that generates static HTML (and other) files from a dynamic Merb application.
 
-For use similar to static-site building tools like Webby.
+Provides functionality similar to static-site building tools like Webby, but you can use all the plugins, helpers, and databases available to Merb.
+
+For example, I use Mac OS X to generate screenshots for a news-reading application, but deploy to a Linux box hosted at RailsMachine. I can use merb_static to generate the HTML locally and deploy the static files and images to the server.
+
+  http://peepcode.com/system/screens/
+
+Usage
+=====
+
+In config/dependencies.rb:
+
+  dependency "merb_static"
+  
+Add other configuration information (TODO).
+
+Generate the site:
+
+  rake merb_static:build
+  
+Start over:
+
+  rake merb_static:clean
 
 TODO
 ====
 
-Documentation
-
-# Tip: Use Merb::Config[:path_prefix] to mount at path
-
+* Documentation
+* Configuration options
+* Spidering of all urls on a site
+* Recommendations for writing sites that will be archived
+* Synchronization task
+* Tips: Use Merb::Config[:path_prefix] to generate URLs at a path
