@@ -1,0 +1,14 @@
+merb_static
+===========
+
+A plugin for the Merb framework that generates static HTML (and other) files from a dynamic Merb application.
+
+For use similar to static-site building tools like Webby.
+
+TODO
+====
+
+Documentation
+
+# Tip: Use Merb::Config[:path_prefix] to mount at path
+
