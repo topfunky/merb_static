@@ -18,6 +18,8 @@ In config/dependencies.rb:
   
 Add other configuration information (TODO).
 
+  * TODO
+
 Generate the site:
 
   rake merb_static:build
@@ -25,6 +27,14 @@ Generate the site:
 Start over:
 
   rake merb_static:clean
+  
+Build and deploy to a remote server:
+
+  rake merb_static:sync
+
+You may want to run your own app's tasks first by creating a custom Rake task:
+
+  task :my_sync => [:my_build_task, "merb_static:sync"]
 
 TODO
 ====

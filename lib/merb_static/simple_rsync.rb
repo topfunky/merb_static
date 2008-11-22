@@ -4,17 +4,25 @@ module Merb
     ##
     # TODO Refactor
     # * Try with fresh destination. Are the directories created as needed?
+    # * It may be better to sync a separate directory, then symlink it to the live directory.
 
     module SimpleRsync
 
-      def self.sync(domain, username, password, passphrase, local_path, remote_path)
+      def self.sync(options={})
         require 'net/ssh'
         require 'net/sftp'
 
         file_perm = 0644
 
-        puts "Connecting to #{domain}"
-        Net::SSH.start(domain, username, :password => password, :passphrase => passphrase) do |ssh|
+        local_path  = Merb.root / "output"
+        remote_path = options[:path]
+
+        extra_net_ssh_options              = {}
+        extra_net_ssh_options[:password]   = options[:password]   if options[:password]
+        extra_net_ssh_options[:passphrase] = options[:passphrase] if options[:passphrase]
+
+        puts "Connecting to #{options[:domain]}"
+        Net::SSH.start(options[:domain], options[:username], extra_net_ssh_options) do |ssh|
           ssh.sftp.connect do |sftp|
             puts 'Checking for files which need updating'
 
@@ -73,4 +81,3 @@ module Merb
     end
   end
 end
-

@@ -1,14 +1,21 @@
 # make sure we're running inside Merb
 if defined?(Merb::Plugins)
 
-  %(cookie cookie_jar simple_rsync archiver).each do |filename|
+  $LOAD_PATH << File.dirname(__FILE__)
+  %w(cookie cookie_jar simple_rsync archiver).each do |filename|
     require "merb_static/#{filename}"
   end
 
   # Merb gives you a Merb::Plugins.config hash...feel free to put your stuff in your piece of it
   Merb::Plugins.config[:merb_static] = {
-    :urls => ["/"],
+    :urls   => ["/"],
     :domain => 'localhost',
+    :remote => {
+      :domain     => "localhost",
+      :username   => "root",
+      :passphrase => "",
+      :path       => "/tmp"
+    }
   }
 
   Merb::BootLoader.before_app_loads do

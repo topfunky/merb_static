@@ -2,10 +2,25 @@ module Merb
   module Static
     class Archiver
 
+      attr_accessor :config
+
       def initialize
-        read_configuration
-        copy_assets
-        unleash_the_spiders
+        yield self
+      end
+
+      def self.build
+        new do |a|
+          a.read_configuration
+          a.copy_assets
+          a.unleash_the_spiders
+        end
+      end
+
+      def self.sync
+        new do |a|
+          a.read_configuration
+          SimpleRsync.sync(a.config[:remote])
+        end
       end
 
       def read_configuration
@@ -21,9 +36,11 @@ module Merb
 
       def unleash_the_spiders
         Merb.logger.info "Unleashing spiders"
+        domain = (@config[:domain] =~ /^https?:/) ? @config[:domain] : "http://#{@config[:domain]}"
+
         @config[:urls].each do |relative_url|
           Merb.logger.info "Fetching #{relative_url}"
-          absolute_url = [@config[:domain], relative_url].join
+          absolute_url = [domain, relative_url].join
 
           Merb.logger.info "Absolute url: #{absolute_url}"
           response = request(absolute_url)
