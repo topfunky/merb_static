@@ -16,11 +16,20 @@ In config/dependencies.rb:
 
   dependency "merb_static"
   
-Add other configuration information (TODO).
+Add other configuration information to your Merb configuration.
 
-  * TODO
+  Merb::Plugins.config[:merb_static] = {
+    :urls  => ["/"],
+    :domain => "http://peepcode.com",
+    :remote => {
+      :domain   => "peepcode.com",
+      :username => "deploy",
+      :passphrase => "my ssh key passphrase",
+      :path => "/full/path/to/deploy/this/app/to"
+    }
+  }
 
-Generate the site:
+Generate the static site:
 
   rake merb_static:build
   
@@ -45,3 +54,4 @@ TODO
 * Recommendations for writing sites that will be archived
 * Synchronization task
 * Tips: Use Merb::Config[:path_prefix] to generate URLs at a path
+
