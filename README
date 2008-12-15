@@ -1,6 +1,8 @@
 merb_static
 ===========
 
+WARNING: EXPERIMENTAL. Some features are missing or partially implemented. This is being use on small single-page sites but hasn't yet been tested with complex sites.
+
 A plugin for the Merb framework that generates static HTML (and other) files from a dynamic Merb application.
 
 Provides functionality similar to static-site building tools like Webby, but you can use all the plugins, helpers, and databases available to Merb.
