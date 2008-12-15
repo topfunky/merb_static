@@ -1,7 +1,9 @@
 module Merb
   module Static
     class Archiver
-
+      
+      include ::Caboose::SpiderIntegrator
+      
       attr_accessor :config
 
       def initialize
@@ -11,7 +13,7 @@ module Merb
       def self.build
         new do |a|
           a.read_configuration
-          a.copy_assets
+#           a.copy_assets
           a.unleash_the_spiders
         end
       end
@@ -40,11 +42,12 @@ module Merb
 
         @config[:urls].each do |relative_url|
           Merb.logger.info "Fetching #{relative_url}"
+          # TODO Do this in the request method
           absolute_url = [domain, relative_url].join
 
           Merb.logger.info "Absolute url: #{absolute_url}"
           response = request(absolute_url)
-
+          
           if response.status == 200
             Merb.logger.info "Response is #{response.status}"
             # TODO Get file type and extension from headers or request.
@@ -56,6 +59,8 @@ module Merb
             File.open(filename_on_disk, 'w') do |f|
               f.write(response.body.to_s)
             end
+            
+            spider(response.body, "/", :verbose => true)  
           else
             raise "Error while fetching page: #{response.inspect}"
           end
@@ -64,6 +69,7 @@ module Merb
       end
 
       def request(uri, env = {})
+        # TODO Combine with domain here to get absolute URL
         uri = url(uri) if uri.is_a?(Symbol)
         uri = URI(uri)
         uri.scheme ||= "http"

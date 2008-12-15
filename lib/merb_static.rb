@@ -2,10 +2,13 @@
 if defined?(Merb::Plugins)
 
   $LOAD_PATH << File.dirname(__FILE__)
+  require 'hpricot'
+  require 'caboose'
+  require 'caboose/spider_integrator'
   %w(cookie cookie_jar simple_rsync archiver).each do |filename|
     require "merb_static/#{filename}"
   end
-
+  
   # Merb gives you a Merb::Plugins.config hash...feel free to put your stuff in your piece of it
   Merb::Plugins.config[:merb_static] = {
     :urls   => ["/"],
